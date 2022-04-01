@@ -10,10 +10,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(tags = "UsuarioEndPoint")
 @RestController
@@ -36,51 +33,36 @@ public class UsuarioController {
     public Usuario findById(@PathVariable(value = "idUsuario")Long idUsuario) {
         return usuarioService.findBy(idUsuario).orElseThrow(() -> new NotFoundException("Usuario não foi encontrado"));
     }
-/*
 
-    @RequestMapping(method = RequestMethod.POST,
-                    produces = MediaType.APPLICATION_JSON_VALUE,
-                    consumes = MediaType.APPLICATION_JSON_VALUE)
+
+    @PostMapping(value = "/create",
+                 produces = MediaType.APPLICATION_JSON_VALUE,
+                 consumes = MediaType.APPLICATION_JSON_VALUE)
     public Usuario create(@RequestBody Usuario usuario) {
         return usuarioService.saveUsuario(usuario);
     }
 
-    @RequestMapping(value = "update/",
-            method = RequestMethod.PUT,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/update",
+                consumes = MediaType.APPLICATION_JSON_VALUE,
+                produces = MediaType.APPLICATION_JSON_VALUE)
     public Usuario updateDadosPessoais(@RequestBody Usuario usuario) {
         return usuarioService.updateDadosPessoais(usuario);
     }
 
-    @RequestMapping(method = RequestMethod.POST,
-                    consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/updatePassword",
+                 consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateSenha(@RequestBody String senha) {
 
     }
 
-    @RequestMapping(method = RequestMethod.POST,
-                    consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/updateLogin",
+                 consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateLogin() {
-
     }
 
-    public void bloquearUsuario() {
-
-    }
-
-    public void deleteMedico() {
-
-    }
-
-    public void addNovoMedico() {
-
-    }
-
-    @RequestMapping(value = "/{id}",
-                    method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public void deleteUsuario(@PathVariable(value = "id") Long id) {
         usuarioService.delete(id);
     }
-*/
+
 }
