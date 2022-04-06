@@ -1,6 +1,6 @@
 package br.com.faculdadejk.demo.core.model;
 
-import br.com.faculdadejk.demo.core.enums.TipoUsuarioEnum;
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,13 +9,13 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 @Entity
+@Table(name = "USUARIO",schema = "TCC")
 public class Usuario implements Serializable {
 
     @Id
@@ -24,36 +24,20 @@ public class Usuario implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "SEQ_USUARIO")
     private Long idUsuario;
 
+    @NotNull
     @Column(name = "NOME_COMPLETO")
     private String nomeCompleto;
 
-    @Column(name = "CPF")
-    private String cpf;
+    @NotNull
+    @Column(name = "USERNAME")
+    private String username;
 
-    @OneToOne
-    @JoinColumn(name = "ENDERECO_ID")
-    private Endereco enderecoUsuario;
+    @NotNull
+    @Column(name = "PASSWORD")
+    private String password;
 
-    @Column(name = "USUARIO")
-    private String usuario;
-
-    @Column(name = "SENHA")
-    private String senha;
-
-    @Enumerated(EnumType.STRING)
-    private TipoUsuarioEnum tipoUsuarioEnum;
-
+    @NotNull
     @Column(name = "DATA_CRIACAO")
     private Date dataCriacao;
-
-    @Column(name = "STATUS_USUARIO")
-    private Boolean statusUsuario;
-
-    @OneToOne
-    @JoinColumn(name = "DIARIO_ID")
-    private Diario diarioId;
-
-    @OneToMany(mappedBy = "paciente")
-    private List<MedicoPermitido> medicosPermitidos;
 
 }

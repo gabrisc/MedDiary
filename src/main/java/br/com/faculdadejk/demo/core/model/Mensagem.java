@@ -15,6 +15,7 @@ import java.util.Date;
 @Setter
 @Getter
 @Entity
+@Table(name = "MENSAGEM",schema = "TCC")
 public class Mensagem {
 
     @Id
@@ -23,19 +24,18 @@ public class Mensagem {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "SEQ_MENSAGEM")
     private Long idMensagem;
 
-    @ManyToOne
-    @JoinColumn(name = "DIARIO_ID")
-    private Diario diarioPaciente;
+    @Column(name = "ID_DIARIO")
+    private Long idDiario;
 
     @Column(name = "CONTEUDO_MENSAGEM")
-    private String conteudoMensagem;
+    private Long conteudoMensagem;
 
     @Column(name = "DATA_CRIACAO")
     private Date dataCriacao;
 
     @Column(name = "TIPO_MENSAGEM")
-    private TipoMensagemEnum tipoMensagemEnum;
+    private Long tipoMensagem;
 
     @Column(name = "CATEGORIA_MENSAGEM")
-    private CategoriaMensagemEnum categoriaMensagemEnum;
+    private Long categoriaMensagem;
 }

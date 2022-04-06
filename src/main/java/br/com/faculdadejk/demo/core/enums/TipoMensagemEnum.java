@@ -5,8 +5,13 @@ import lombok.Getter;
 @Getter
 public enum TipoMensagemEnum {
 
-    MENSAGENS_PRIVADAS,
-    MENSAGENS_PUBLICAS,
-    MENSAGEM_FORUM;
+    MENSAGENS_PRIVADAS(1),
+    MENSAGENS_PUBLICAS(2),
+    MENSAGEM_FORUM(3);
 
+    private Integer type;
+
+    TipoMensagemEnum(Integer type) {
+        this.type = type;
+    }
 }

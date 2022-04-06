@@ -5,9 +5,14 @@ import lombok.Getter;
 @Getter
 public enum CategoriaMensagemEnum {
 
-    AZUL_NADA_URGENTE,
-    VERDE_POUCO_URGENTE,
-    AMARELO_URGENTE,
-    LARANJA_MUITO_URGENTE;
+    AZUL_NADA_URGENTE(1),
+    VERDE_POUCO_URGENTE(2),
+    AMARELO_URGENTE(3),
+    LARANJA_MUITO_URGENTE(4);
 
+    private Integer type;
+
+    CategoriaMensagemEnum(Integer type) {
+        this.type = type;
+    }
 }

@@ -6,13 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 @Entity
+@Table(name = "DIARIO",schema = "TCC")
 public class Diario {
 
     @Id
@@ -21,10 +21,7 @@ public class Diario {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "SEQ_DIARIO")
     private Long idDiario;
 
-    @OneToMany(mappedBy = "diarioPaciente")
-    private List<Mensagem> mensagens;
-
-    @OneToOne(mappedBy = "diarioId")
-    private Usuario usuarioDono;
+    @Column(name = "ID_PACIENTE")
+    private Long idPaciente;
 
 }

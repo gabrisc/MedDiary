@@ -12,6 +12,4 @@ public class DiarioController {
     @Autowired
     private DiarioService diarioService;
 
-
-
 }
