@@ -1,27 +1,29 @@
 package br.com.faculdadejk.demo.core.mapper;
 
-import br.com.faculdadejk.demo.core.model.Usuario;
-import br.com.faculdadejk.demo.core.model.vo.UsuarioVO;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
+
+;
 
 @Mapper
 public interface UsuarioMapper {
 
-    UsuarioMapper INSTANCE = Mappers.getMapper(UsuarioMapper.class);
-
-    @Mapping(target = "idUsuario", source = "usuarioVO.idUsuario")
-    @Mapping(target = "nomeCompleto", source = "usuarioVO.nomeCompleto")
-    @Mapping(target = "username", source = "usuarioVO.username")
-    @Mapping(target = "password", source = "usuarioVO.password")
-    @Mapping(target = "dataCriacao", source = "usuarioVO.dataCriacao")
-    Usuario toUsuario(UsuarioVO usuarioVO);
-
-    @Mapping(target = "idUsuario", source = "usuario.idUsuario")
-    @Mapping(target = "nomeCompleto", source = "usuario.nomeCompleto")
-    @Mapping(target = "username", source = "usuario.username")
-    @Mapping(target = "password", source = "usuario.password")
-    @Mapping(target = "dataCriacao", source = "usuario.dataCriacao")
-    UsuarioVO toUsuarioVo(Usuario usuario);
+//    Mapper INSTANCE = Mappers.getMapper(Mapper.class);
+//
+//    @Mapping(target = "id", source = "VO.id")
+//    @Mapping(target = "nomeCompleto", source = "VO.nomeCompleto")
+//    @Mapping(target = "username", source = "VO.username")
+//    @Mapping(target = "password", source = "VO.password")
+//    @Mapping(target = "dataCriacao", source = "VO.dataCriacao")
+//    @Mapping(target = "cpf_CRM", source = "VO.cpf_CRM")
+//    @Mapping(target = "EnumRules", source = "VO.EnumRules")
+//     to(VO VO);
+//
+//    @Mapping(target = "id", source = ".id")
+//    @Mapping(target = "nomeCompleto", source = ".nomeCompleto")
+//    @Mapping(target = "username", source = ".username")
+//    @Mapping(target = "password", source = ".password")
+//    @Mapping(target = "dataCriacao", source = ".dataCriacao")
+//    @Mapping(target = "cpf_CRM", source = ".cpf_CRM")
+//    @Mapping(target = "EnumRules", source = ".EnumRules")
+//    VO toVo( );
 }

@@ -1,27 +1,30 @@
 package br.com.faculdadejk.demo.core.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import br.com.faculdadejk.demo.core.enums.UsuarioEnumRule;
+import lombok.*;
 
 import javax.persistence.*;
+import javax.swing.*;
+import java.time.LocalDate;
+import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
-@Getter
 @Entity
-@Table(name = "DIARIO",schema = "TCC")
+@Data
+@NoArgsConstructor
 public class Diario {
 
     @Id
-    @Column(name = "ID_DIARIO")
-    @SequenceGenerator(name = "SEQ_DIARIO", schema = "TCC",sequenceName = "SQ_DIARIO",initialValue = 1,allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "SEQ_DIARIO")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idDiario;
 
-    @Column(name = "ID_PACIENTE")
-    private Long idPaciente;
+    @Column
+    private LocalDate dataCriacao;
+
+    @Column
+    private LocalDate dataAlteracao;
+
+    @ManyToOne
+    @JoinColumn(name="usuario_id", referencedColumnName = "id", nullable = false)
+    private Usuario idUsuario;
 
 }

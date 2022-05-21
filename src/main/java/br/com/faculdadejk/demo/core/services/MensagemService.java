@@ -1,7 +1,7 @@
 package br.com.faculdadejk.demo.core.services;
 
 import br.com.faculdadejk.demo.core.exception.NotFoundException;
-import br.com.faculdadejk.demo.core.model.Mensagem;
+import br.com.faculdadejk.demo.core.model.RegistroDiario;
 import br.com.faculdadejk.demo.core.repository.MensagemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,14 +16,14 @@ public class MensagemService {
     @Autowired
     private MensagemRepository mensagemRepository;
 
-    public Mensagem novaMensagem(Mensagem novaMensagem) {
-        novaMensagem.setDataCriacao(new Date());
-        return mensagemRepository.save(novaMensagem);
+    public RegistroDiario novaMensagem(RegistroDiario novaRegistroDiario) {
+        novaRegistroDiario.setDataCriacao(new Date());
+        return mensagemRepository.save(novaRegistroDiario);
     }
 
-    public Mensagem atualizarMensagem(Mensagem mensagemAlterada) {
-        if (mensagemRepository.existsById(mensagemAlterada.getIdMensagem())){
-            return mensagemRepository.save(mensagemAlterada);
+    public RegistroDiario atualizarMensagem(RegistroDiario registroDiarioAlterada) {
+        if (mensagemRepository.existsById(registroDiarioAlterada.getIdMensagem())){
+            return mensagemRepository.save(registroDiarioAlterada);
         } else {
             throw new NotFoundException("Não foi possivel encontrar a mensagem");
         }
@@ -38,7 +38,7 @@ public class MensagemService {
         }
     }
 
-    public Mensagem findMensagemByIdDiario(Long id) {
+    public RegistroDiario findMensagemByIdDiario(Long id) {
         return mensagemRepository.findMensagemByIdDiario(id).orElseThrow(() -> new NotFoundException("Não foi possivel encontrar a mensagem"));
     };
 

@@ -40,8 +40,8 @@ public class DiarioService {
         return diarioRepository.findById(idDiario).orElseThrow(() -> new NotFoundException("Não foi possivel encontrar o diario"));
     };
 
-    public Diario findDiarioByIdPaciente(Long idPaciente) {
-        return diarioRepository.findByIdPaciente(idPaciente).orElseThrow(() -> new NotFoundException("Não foi possivel encontrar o diario"));
+    public Diario findDiarioByIdUsuario(Long idPaciente) {
+        return diarioRepository.findByIdUsuario(idPaciente).orElseThrow(() -> new NotFoundException("Não foi possivel encontrar o diario"));
     };
 
 }

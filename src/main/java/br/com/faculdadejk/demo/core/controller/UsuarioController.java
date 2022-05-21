@@ -1,104 +1,88 @@
 package br.com.faculdadejk.demo.core.controller;
 
-import br.com.faculdadejk.demo.core.mapper.UsuarioMapper;
 import br.com.faculdadejk.demo.core.model.Usuario;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import br.com.faculdadejk.demo.core.model.vo.UsuarioVO;
+import br.com.faculdadejk.demo.core.model.dto.UsuarioDTO;
+import br.com.faculdadejk.demo.core.model.dto.UsuarioResponseDTO;
 import br.com.faculdadejk.demo.core.services.UsuarioService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
 
-@Api(tags = "UsuarioEndPoint")
 @RestController
-@RequestMapping("/user")
-@ApiResponses(value = {
-        @ApiResponse(code = 200,message = "requisicao realizada com sucesso"),
-        @ApiResponse(code = 400,message = "erro na requisicao")
-})
+@RequestMapping("/users")
+@Api(tags = "users")
+@RequiredArgsConstructor
 public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+    private final ModelMapper modelMapper;
 
-//    private final PasswordEncoder encoder;
-//
-//    public UsuarioController(UsuarioService usuarioService, PasswordEncoder encoder) {
-//        this.usuarioService = usuarioService;
-//        this.encoder = encoder;
-//    }
-
-
-//    @ApiOperation(value = "(READ) - Login Usuario do tipo paciente",
-//            produces = MediaType.APPLICATION_JSON_VALUE,
-//            consumes = MediaType.APPLICATION_JSON_VALUE)
-//    @GetMapping(value = "/login")
-//    public ResponseEntity<Boolean> login(@RequestParam String nomeUsuario, @RequestParam String senha) {
-//
-//        Optional<UsuarioVO> optUsuario = UsuarioMapper.INSTANCE.toUsuarioVo(
-//                                        usuarioService.login(nomeUsuario, senha));
-//        if (optUsuario.isEmpty()) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
-//        }
-//
-//        UsuarioVO usuario = optUsuario.get();
-//        boolean valid = encoder.matches(senha, usuario.getPassword());
-//
-//        HttpStatus status = (valid) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
-//
-//
-//        return  ResponseEntity.status(status).body(valid);
-//    }
-
-    @ApiOperation(value = "(CREATE) - Criação de um novo Usuario do tipo paciente",
-                  produces = MediaType.APPLICATION_JSON_VALUE,
-                  consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PostMapping(value = "/create")
-    public UsuarioVO novoUsuario(@RequestBody UsuarioVO usuarioPaciente) {
-        return UsuarioMapper.INSTANCE.toUsuarioVo(
-                usuarioService.novoUsuario(
-                        UsuarioMapper.INSTANCE.toUsuario(usuarioPaciente)));
+    @PostMapping("/signin")
+    @ApiResponses(value = {//
+            @ApiResponse(code = 400, message = "Something went wrong"), //
+            @ApiResponse(code = 422, message = "Invalid username/password supplied")})
+    public String login(//
+                        @ApiParam("Username") @RequestParam String username, //
+                        @ApiParam("Password") @RequestParam String password) {
+        return usuarioService.signin(username, password);
     }
 
-    @ApiOperation(value = "(UPDATE) - Realiza um Update nos dados pessoais do paciente",
-                  consumes = MediaType.APPLICATION_JSON_VALUE,
-                  produces = MediaType.APPLICATION_JSON_VALUE)
-    @PutMapping(value = "/update")
-    public UsuarioVO atualizarUsuario(@RequestBody UsuarioVO usuario) {
-        return UsuarioMapper.INSTANCE.toUsuarioVo(
-                usuarioService.atualizarUsuario(
-                        UsuarioMapper.INSTANCE.toUsuario(usuario)));
+    @PostMapping("/signup")
+    @ApiOperation(value = "${description.signup}")
+    @ApiResponses(value = {//
+            @ApiResponse(code = 400, message = "Something went wrong"), //
+            @ApiResponse(code = 403, message = "Access denied"), //
+            @ApiResponse(code = 422, message = "Username is already in use")})
+    public String signup(@ApiParam("Signup User") @RequestBody UsuarioDTO user) {
+
+        return usuarioService.signup(modelMapper.map(user, Usuario.class));
     }
 
-    @ApiOperation(value = "(DELETE) - Deletar um Usuario",
-                  consumes = MediaType.APPLICATION_JSON_VALUE)
-    @DeleteMapping(value = "/delete/{id}")
-    public HttpStatus deleteUsuario(@PathVariable(value = "id") Long id) {
-        return usuarioService.ApagarUsuario(id);
+    @DeleteMapping(value = "/{username}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ApiOperation(value = "${description.delete}", authorizations = { @Authorization(value="apiKey") })
+    @ApiResponses(value = {//
+            @ApiResponse(code = 400, message = "Something went wrong"), //
+            @ApiResponse(code = 403, message = "Access denied"), //
+            @ApiResponse(code = 404, message = "The user doesn't exist"), //
+            @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
+    public String delete(@ApiParam("Username") @PathVariable String username) {
+        usuarioService.delete(username);
+        return username;
     }
 
-    @ApiOperation(value = "(READ) - Procurar por ID",
-                  produces = MediaType.APPLICATION_JSON_VALUE,
-                  consumes = MediaType.APPLICATION_JSON_VALUE)
-    @GetMapping(value = "/findById/{idUsuario}")
-    public Usuario findUsuarioById(@PathVariable(value = "idUsuario")Long idUsuario) {
-        return usuarioService.findUsuarioById(idUsuario);
+    @GetMapping(value = "/{username}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ApiOperation(value = "${description.search}", response = UsuarioResponseDTO.class, authorizations = { @Authorization(value="apiKey") })
+    @ApiResponses(value = {//
+            @ApiResponse(code = 400, message = "Something went wrong"), //
+            @ApiResponse(code = 403, message = "Access denied"), //
+            @ApiResponse(code = 404, message = "The user doesn't exist"), //
+            @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
+    public UsuarioResponseDTO search(@ApiParam("Username") @PathVariable String username) {
+        return modelMapper.map(usuarioService.search(username), UsuarioResponseDTO.class);
     }
 
-    @ApiOperation(value = "(READ) - Procurar por USERNAME",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
-    @GetMapping(value = "/findUsuarioByUsername/{username}")
-    public Usuario findUsuarioByUsername(@PathVariable(value = "username")String username) {
-        return usuarioService.findUsuarioByUsername(username);
+    @GetMapping(value = "/me")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
+    @ApiOperation(value = "${description.me}", response = UsuarioResponseDTO.class, authorizations = { @Authorization(value="apiKey") })
+    @ApiResponses(value = {//
+            @ApiResponse(code = 400, message = "Something went wrong"), //
+            @ApiResponse(code = 403, message = "Access denied"), //
+            @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
+    public UsuarioResponseDTO whoami(HttpServletRequest req) {
+        return modelMapper.map(usuarioService.whoami(req), UsuarioResponseDTO.class);
     }
 
+    @GetMapping("/refresh")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
+    public String refresh(HttpServletRequest req) {
+        return usuarioService.refresh(req.getRemoteUser());
+    }
 }

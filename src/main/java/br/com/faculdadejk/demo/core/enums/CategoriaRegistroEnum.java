@@ -3,7 +3,7 @@ package br.com.faculdadejk.demo.core.enums;
 import lombok.Getter;
 
 @Getter
-public enum CategoriaMensagemEnum {
+public enum CategoriaRegistroEnum {
 
     AZUL_NADA_URGENTE(1),
     VERDE_POUCO_URGENTE(2),
@@ -12,7 +12,7 @@ public enum CategoriaMensagemEnum {
 
     private Integer type;
 
-    CategoriaMensagemEnum(Integer type) {
+    CategoriaRegistroEnum(Integer type) {
         this.type = type;
     }
 }

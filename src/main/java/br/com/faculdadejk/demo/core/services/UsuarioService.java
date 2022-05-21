@@ -1,66 +1,69 @@
 package br.com.faculdadejk.demo.core.services;
 
-import br.com.faculdadejk.demo.core.exception.NotFoundException;
+import br.com.faculdadejk.demo.core.exception.CustomException;
 import br.com.faculdadejk.demo.core.model.Usuario;
 import br.com.faculdadejk.demo.core.repository.UsuarioRepository;
+import br.com.faculdadejk.demo.security.JwtTokenProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.Objects;
-import java.util.Optional;
+;import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 
 @Service
+@RequiredArgsConstructor
 public class UsuarioService {
 
-    public static final String USUARIO_NOT_FOUND = "Não foi possivel encontrar o usuario";
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-//    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-
-    public Usuario login(String nome, String senha) {
-
-//        String senhaConvertida = bCryptPasswordEncoder.encode(senha);
-        Optional<Usuario> usuario = usuarioRepository.findUsuarioByUsernameAndPassword(nome, senha);
-
-        return usuario.orElseThrow(()->new NotFoundException(USUARIO_NOT_FOUND));
-    }
-
-    public Usuario novoUsuario(Usuario usuarioNovo) {
-        usuarioNovo.setDataCriacao(new Date());
-//        usuarioNovo.setPassword(bCryptPasswordEncoder.encode(usuarioNovo.getPassword()));
-
-        return usuarioRepository.save(usuarioNovo);
-    }
-
-    public Usuario atualizarUsuario(Usuario usuarioAlterado) {
-        if (usuarioRepository.existsById(usuarioAlterado.getIdUsuario())) {
-            return usuarioRepository.save(usuarioAlterado);
-        } else {
-            throw new NotFoundException(USUARIO_NOT_FOUND);
+    public String signin(String username, String password) {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            return jwtTokenProvider.createToken(username, usuarioRepository.findByUsername(username).get().getUsuarioEnumRules());
+        } catch (AuthenticationException e) {
+            throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
-    public HttpStatus ApagarUsuario(Long usuarioId) {
-        if (Objects.nonNull(usuarioId)) {
-            usuarioRepository.deleteById(usuarioId);
-            return HttpStatus.OK;
+    public String signup(Usuario usuario) {
+        if (!usuarioRepository.existsByUsername(usuario.getUsername())) {
+            usuario.setDataCriacao(LocalDate.now());
+            usuario.setDataAlteracao(LocalDate.now());
+            usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+            usuarioRepository.save(usuario);
+            return jwtTokenProvider.createToken(usuario.getUsername(), usuario.getUsuarioEnumRules());
         } else {
-            return HttpStatus.NOT_FOUND;
+            throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
-    public Usuario findUsuarioById(Long id) {
-        return usuarioRepository.findById(id)
-                                .orElseThrow(() -> new NotFoundException(USUARIO_NOT_FOUND));
-    };
-
-    public Usuario findUsuarioByUsername(String username) {
-        return usuarioRepository.findUsuarioByUsername(username)
-                                .orElseThrow(() -> new NotFoundException(USUARIO_NOT_FOUND));
+    public void delete(String username) {
+        usuarioRepository.deleteByUsername(username);
     }
 
+    public Usuario search(String username) {
+        Usuario usuario = usuarioRepository.findByUsername(username).orElseThrow(()-> new CustomException("The user doesn't exist", HttpStatus.NOT_FOUND));
+        return usuario;
+    }
+
+    public Usuario whoami(HttpServletRequest req) {
+        return usuarioRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req))).orElseThrow(()->new CustomException("The user doesn't exist", HttpStatus.NOT_FOUND));
+    }
+
+    public String refresh(String username) {
+        return jwtTokenProvider.createToken(username, usuarioRepository.findByUsername(username).get().getUsuarioEnumRules());
+    }
 }

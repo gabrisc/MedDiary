@@ -1,43 +1,43 @@
 package br.com.faculdadejk.demo.core.model;
 
-import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import br.com.faculdadejk.demo.core.enums.UsuarioEnumRule;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
-@Getter
 @Entity
-@Table(name = "USUARIO",schema = "TCC")
-public class Usuario implements Serializable {
-
+@Data // Create getters and setters
+@NoArgsConstructor
+public class Usuario {
     @Id
-    @Column(name = "ID_USUARIO")
-    @SequenceGenerator(name = "SEQ_USUARIO", schema = "TCC",sequenceName = "SQ_USUARIO",initialValue = 1,allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "SEQ_USUARIO")
-    private Long idUsuario;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @NotNull
-    @Column(name = "NOME_COMPLETO")
+    @Column(nullable = false)
     private String nomeCompleto;
 
-    @NotNull
-    @Column(name = "USERNAME")
+    @Column(unique = true, nullable = false)
     private String username;
 
-    @NotNull
-    @Column(name = "PASSWORD")
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
     private String password;
 
-    @NotNull
-    @Column(name = "DATA_CRIACAO")
-    private Date dataCriacao;
 
+    @Column(unique = true, nullable = false)
+    private String cpf_CRM;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    List<UsuarioEnumRule> usuarioEnumRules;
+
+    @Column
+    private LocalDate dataCriacao;
+
+    @Column
+    private LocalDate dataAlteracao;
 }

@@ -3,7 +3,7 @@ package br.com.faculdadejk.demo.core.enums;
 import lombok.Getter;
 
 @Getter
-public enum TipoMensagemEnum {
+public enum TipoRegistroEnum {
 
     MENSAGENS_PRIVADAS(1),
     MENSAGENS_PUBLICAS(2),
@@ -11,7 +11,7 @@ public enum TipoMensagemEnum {
 
     private Integer type;
 
-    TipoMensagemEnum(Integer type) {
+    TipoRegistroEnum(Integer type) {
         this.type = type;
     }
 }

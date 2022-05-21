@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface DiarioRepository extends JpaRepository<Diario,Long> {
 
-    @Query(value = "SELECT D FROM Diario D WHERE D.idPaciente = ?1")
-    Optional<Diario> findByIdPaciente(Long idPaciente);
+    @Query(value = "SELECT D FROM Diario D WHERE D.idUsuario = ?1")
+    Optional<Diario> findByIdUsuario(Long idUsuario);
 }
