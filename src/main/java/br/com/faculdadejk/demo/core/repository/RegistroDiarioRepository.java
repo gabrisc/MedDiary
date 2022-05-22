@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface MensagemRepository extends JpaRepository<RegistroDiario,Long> {
+public interface RegistroDiarioRepository extends JpaRepository<RegistroDiario,Long> {
 
-    @Query(value = "SELECT M FROM Mensagem M WHERE M.idDiario = ?1")
-    Optional<RegistroDiario> findMensagemByIdDiario(Long idDiario);
+    @Query(value = "SELECT M FROM RegistroDiario M WHERE M.idDiario = ?1")
+    Optional<RegistroDiario> findRegistroDiarioByIdDiario(Long idDiario);
 }

@@ -1,8 +1,11 @@
 package br.com.faculdadejk.demo.core.controller;
 
+import br.com.faculdadejk.demo.core.model.Diario;
 import br.com.faculdadejk.demo.core.model.Usuario;
+import br.com.faculdadejk.demo.core.model.dto.DiarioDTO;
 import br.com.faculdadejk.demo.core.model.dto.UsuarioDTO;
 import br.com.faculdadejk.demo.core.model.dto.UsuarioResponseDTO;
+import br.com.faculdadejk.demo.core.services.DiarioService;
 import br.com.faculdadejk.demo.core.services.UsuarioService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,9 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private DiarioService diarioService;
     private final ModelMapper modelMapper;
 
     @PostMapping("/signin")
@@ -40,7 +46,6 @@ public class UsuarioController {
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 422, message = "Username is already in use")})
     public String signup(@ApiParam("Signup User") @RequestBody UsuarioDTO user) {
-
         String token =usuarioService.signup(modelMapper.map(user, Usuario.class));
         return token;
     }

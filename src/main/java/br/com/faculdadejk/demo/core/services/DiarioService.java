@@ -5,6 +5,9 @@ import br.com.faculdadejk.demo.core.model.Diario;
 import br.com.faculdadejk.demo.core.model.Usuario;
 import br.com.faculdadejk.demo.core.model.dto.DiarioDTO;
 import br.com.faculdadejk.demo.core.repository.DiarioRepository;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 @Service
+@AllArgsConstructor
 public class DiarioService {
 
     @Autowired
@@ -21,13 +25,13 @@ public class DiarioService {
     @Autowired
     private UsuarioService usuarioService;
 
-    public Diario novoDiario(Diario diario, HttpServletRequest request) {
+    private final ModelMapper modelMapper;
 
-        Usuario usuario = usuarioService.whoami(request);
+    public Diario novoDiario(HttpServletRequest request) {
+        Diario diario = new Diario();
+        diario.setIdUsuario(usuarioService.whoami(request));
         diario.setDataCriacao(LocalDate.now());
         diario.setDataAlteracao(LocalDate.now());
-        diario.setIdUsuario(usuario);
-
         return diarioRepository.save(diario);
     }
 

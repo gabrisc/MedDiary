@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 ;import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -40,8 +41,8 @@ public class UsuarioService {
 
     public String signup(Usuario usuario) {
         if (!usuarioRepository.existsByUsername(usuario.getUsername())) {
-            usuario.setDataCriacao(LocalDate.now());
-            usuario.setDataAlteracao(LocalDate.now());
+            usuario.setDataCriacao(LocalDateTime.now());
+            usuario.setDataAlteracao(LocalDateTime.now());
             usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
             usuarioRepository.save(usuario);
             return jwtTokenProvider.createToken(usuario.getUsername(), usuario.getUsuarioEnumRules());

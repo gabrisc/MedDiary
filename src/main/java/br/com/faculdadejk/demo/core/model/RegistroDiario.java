@@ -7,8 +7,11 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+
 @Data
 @Entity
+@NoArgsConstructor
 public class RegistroDiario {
 
     @Id
@@ -28,10 +31,7 @@ public class RegistroDiario {
     private LocalDateTime dataAlteracao;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private TipoRegistroEnum tipoRegistro;
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    private CategoriaRegistroEnum categoriaRegistro;
+    private List<TipoRegistroEnum> tipoRegistro;
 
     @ManyToOne
     @JoinColumn(name="diario_id", referencedColumnName = "idDiario", nullable = false)
