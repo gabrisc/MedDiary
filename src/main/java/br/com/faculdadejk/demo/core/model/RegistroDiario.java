@@ -1,27 +1,39 @@
 package br.com.faculdadejk.demo.core.model;
 
+import br.com.faculdadejk.demo.core.enums.CategoriaRegistroEnum;
+import br.com.faculdadejk.demo.core.enums.TipoRegistroEnum;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 @Data
 @Entity
 public class RegistroDiario {
 
-     private Long idMensagem;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idRegistro;
 
-    @Column(name = "ID_DIARIO")
-    private Long idDiario;
+    @Column(nullable = false)
+    private String conteudoRegistro;
 
-    @Column(name = "CONTEUDO_MENSAGEM")
-    private Long conteudoMensagem;
+    @Column(nullable = false)
+    private String resposta;
 
-    @Column(name = "DATA_CRIACAO")
-    private Date dataCriacao;
+    @Column
+    private LocalDateTime dataCriacao;
 
-    @Column(name = "TIPO_MENSAGEM")
-    private Long tipoMensagem;
+    @Column
+    private LocalDateTime dataAlteracao;
 
-    @Column(name = "CATEGORIA_MENSAGEM")
-    private Long categoriaMensagem;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private TipoRegistroEnum tipoRegistro;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private CategoriaRegistroEnum categoriaRegistro;
+
+    @ManyToOne
+    @JoinColumn(name="diario_id", referencedColumnName = "idDiario", nullable = false)
+    private Diario idDiario;
 }

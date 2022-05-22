@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -36,8 +37,8 @@ public class Usuario {
     List<UsuarioEnumRule> usuarioEnumRules;
 
     @Column
-    private LocalDate dataCriacao;
+    private LocalDateTime dataCriacao;
 
     @Column
-    private LocalDate dataAlteracao;
+    private LocalDateTime dataAlteracao;
 }

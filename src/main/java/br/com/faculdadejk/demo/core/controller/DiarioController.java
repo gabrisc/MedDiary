@@ -32,31 +32,69 @@ public class DiarioController {
     private UsuarioService usuarioService;
     private final ModelMapper modelMapper;
 
-    @PostMapping("/cadastro")
-    @ApiOperation(value = "Cadastro Diario - Efetura a função de cadastro de diario, esse função deverá ser inicida" +
-                          "assim que o usuario for criado", authorizations = { @Authorization(value="apiKey") })
-    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    @PostMapping("/create")
+    @ApiOperation(value = "")
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 403, message = "Access denied"), //
-            @ApiResponse(code = 422, message = "Username is already in use")})
-    public DiarioResponseDTO cadastrarDiary(HttpServletRequest request) {
+            @ApiResponse(code = 404, message = "The user doesn't exist"), //
+            @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
+    public DiarioResponseDTO createDiario(HttpServletRequest request) {
+
         Usuario usuario = usuarioService.whoami(request);
         DiarioDTO diario = new DiarioDTO();
         diario.setDataCriacao(LocalDate.now());
         diario.setDataAlteracao(LocalDate.now());
         diario.setIdUsuario(usuario);
+
         return modelMapper.map(diarioService.novoDiario(modelMapper.map(diario, Diario.class)), DiarioResponseDTO.class);
     }
 
-    @GetMapping("/")
-    @ApiOperation(value = "Cadastro Diario - Efetura a função de cadastro de diarios")
+    @GetMapping(value = "/read")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ApiOperation(value = "", authorizations = { @Authorization(value="apiKey") })
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 403, message = "Access denied"), //
-            @ApiResponse(code = 422, message = "Username is already in use")})
-    public DiarioResponseDTO listarDiario(@ApiParam Long id) {
-        return modelMapper.map(diarioService.findDiarioByIdDiario(id), DiarioResponseDTO.class);
+            @ApiResponse(code = 404, message = "The user doesn't exist"), //
+            @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
+    public String read() {
+        return null;
+    }
+    @GetMapping(value = "/read/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ApiOperation(value = "", authorizations = { @Authorization(value="apiKey") })
+    @ApiResponses(value = {//
+            @ApiResponse(code = 400, message = "Something went wrong"), //
+            @ApiResponse(code = 403, message = "Access denied"), //
+            @ApiResponse(code = 404, message = "The user doesn't exist"), //
+            @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
+    public String read_fidID() {
+        return null;
     }
 
+    @PutMapping(value = "/update/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ApiOperation(value = "", authorizations = { @Authorization(value="apiKey") })
+    @ApiResponses(value = {//
+            @ApiResponse(code = 400, message = "Something went wrong"), //
+            @ApiResponse(code = 403, message = "Access denied"), //
+            @ApiResponse(code = 404, message = "The user doesn't exist"), //
+            @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
+    public String upadate() {
+        return null;
+    }
+
+    @DeleteMapping(value = "/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ApiOperation(value = "", authorizations = { @Authorization(value="apiKey") })
+    @ApiResponses(value = {//
+            @ApiResponse(code = 400, message = "Something went wrong"), //
+            @ApiResponse(code = 403, message = "Access denied"), //
+            @ApiResponse(code = 404, message = "The user doesn't exist"), //
+            @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
+    public String delete() {
+        return null;
+
+    }
 }

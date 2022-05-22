@@ -2,11 +2,15 @@ package br.com.faculdadejk.demo.core.services;
 
 import br.com.faculdadejk.demo.core.exception.NotFoundException;
 import br.com.faculdadejk.demo.core.model.Diario;
+import br.com.faculdadejk.demo.core.model.Usuario;
+import br.com.faculdadejk.demo.core.model.dto.DiarioDTO;
 import br.com.faculdadejk.demo.core.repository.DiarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Service
@@ -14,8 +18,16 @@ public class DiarioService {
 
     @Autowired
     private DiarioRepository diarioRepository;
+    @Autowired
+    private UsuarioService usuarioService;
 
-    public Diario novoDiario(Diario diario) {
+    public Diario novoDiario(Diario diario, HttpServletRequest request) {
+
+        Usuario usuario = usuarioService.whoami(request);
+        diario.setDataCriacao(LocalDate.now());
+        diario.setDataAlteracao(LocalDate.now());
+        diario.setIdUsuario(usuario);
+
         return diarioRepository.save(diario);
     }
 

@@ -72,6 +72,6 @@ public class RegistroDiarioController {
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     public String delete() {
         return null;
-    }
 
+    }
 }

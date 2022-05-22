@@ -41,7 +41,8 @@ public class UsuarioController {
             @ApiResponse(code = 422, message = "Username is already in use")})
     public String signup(@ApiParam("Signup User") @RequestBody UsuarioDTO user) {
 
-        return usuarioService.signup(modelMapper.map(user, Usuario.class));
+        String token =usuarioService.signup(modelMapper.map(user, Usuario.class));
+        return token;
     }
 
     @DeleteMapping(value = "/{username}")
