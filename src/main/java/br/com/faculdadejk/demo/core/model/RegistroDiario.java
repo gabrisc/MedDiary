@@ -2,6 +2,7 @@ package br.com.faculdadejk.demo.core.model;
 
 import br.com.faculdadejk.demo.core.enums.CategoriaRegistroEnum;
 import br.com.faculdadejk.demo.core.enums.TipoRegistroEnum;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.persistence.*;
@@ -31,7 +32,10 @@ public class RegistroDiario {
     private LocalDateTime dataAlteracao;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<TipoRegistroEnum> tipoRegistro;
+    private TipoRegistroEnum tipoRegistro;
+
+    @Column
+    private CategoriaRegistroEnum categoriaRegistro;
 
     @ManyToOne
     @JoinColumn(name="diario_id", referencedColumnName = "idDiario", nullable = false)

@@ -33,4 +33,7 @@ public class RegistroDiarioResponseDTO {
 
     @ApiModelProperty(position = 6)
     private DiarioResponseDTO idDiario;
+
+    @ApiModelProperty(position = 7)
+    private Long idRegistro;
 }

@@ -5,9 +5,8 @@ import lombok.Getter;
 @Getter
 public enum TipoRegistroEnum {
 
-    MENSAGENS_PRIVADAS(1),
-    MENSAGENS_PUBLICAS(2),
-    MENSAGEM_FORUM(3);
+    REGISTRO_DIARIO_PESSOAL(1),
+    REGISTRO_DIARIO_ATIVIDADE_RECORRENTE(2);
 
     private Integer type;
 
