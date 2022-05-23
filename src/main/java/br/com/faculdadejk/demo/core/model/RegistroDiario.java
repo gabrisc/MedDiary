@@ -2,13 +2,11 @@ package br.com.faculdadejk.demo.core.model;
 
 import br.com.faculdadejk.demo.core.enums.CategoriaRegistroEnum;
 import br.com.faculdadejk.demo.core.enums.TipoRegistroEnum;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 
 @Data
 @Entity
@@ -31,10 +29,12 @@ public class RegistroDiario {
     @Column
     private LocalDateTime dataAlteracao;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @Column
+    @Enumerated(EnumType.ORDINAL)
     private TipoRegistroEnum tipoRegistro;
 
     @Column
+    @Enumerated(EnumType.ORDINAL)
     private CategoriaRegistroEnum categoriaRegistro;
 
     @ManyToOne
