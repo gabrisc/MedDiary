@@ -11,8 +11,8 @@ import java.util.Optional;
 @Repository
 public interface RegistroDiarioRepository extends JpaRepository<RegistroDiario,Long> {
 
-    @Query(value = "SELECT M FROM RegistroDiario M WHERE M.idDiario = ?1")
+    @Query(value = "SELECT M FROM RegistroDiario M WHERE M.idDiario.idDiario = ?1")
     Optional<RegistroDiario> findRegistroDiarioByIdDiario(Long idDiario);
 
-    List<RegistroDiario> findAllByIdDiario(Long idDiario);
+    List<RegistroDiario> findAllByIdDiarioIdDiario(Long idDiario);
 }

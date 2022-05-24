@@ -1,16 +1,15 @@
 package br.com.faculdadejk.demo.core.model;
 
-import br.com.faculdadejk.demo.core.enums.UsuarioEnumRule;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.swing.*;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
+@Table(name = "Diario",schema = "TCC")
 public class Diario {
 
     @Id

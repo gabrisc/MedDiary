@@ -8,9 +8,12 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping(name = "/msg")
@@ -42,54 +45,37 @@ public class RegistroDiarioController {
         return registroDiarioService.novoRegistroDiarioAtividadeRecorrente(registroDiarioRequest, request);
     }
 
-/*
-    @GetMapping(value = "/read")
-    @PreAuthorize("hasRole('ROLE_PATIENT')")
-    @ApiOperation(value = "", authorizations = { @Authorization(value="apiKey") })
-    @ApiResponses(value = {//
-            @ApiResponse(code = 400, message = "Something went wrong"), //
-            @ApiResponse(code = 403, message = "Access denied"), //
-            @ApiResponse(code = 404, message = "The user doesn't exist"), //
+    @GetMapping("/findAllRegistroByIdDiario")
+    @ApiOperation(value = "")
+    @ApiResponses(value = {
+            @ApiResponse(code = 400, message = "Something went wrong"),
+            @ApiResponse(code = 403, message = "Access denied"),
+            @ApiResponse(code = 404, message = "The user doesn't exist"),
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    public String read() {
-        return "algo";
-    }
-    @GetMapping(value = "/read/{id}")
-    @PreAuthorize("hasRole('ROLE_PATIENT')")
-    @ApiOperation(value = "", authorizations = { @Authorization(value="apiKey") })
-    @ApiResponses(value = {//
-            @ApiResponse(code = 400, message = "Something went wrong"), //
-            @ApiResponse(code = 403, message = "Access denied"), //
-            @ApiResponse(code = 404, message = "The user doesn't exist"), //
-            @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    public String read_fidID() {
-        return "algo";
+    public List<RegistroDiarioResponseDTO> findAllRegistroByIdDiario(HttpServletRequest request) {
+        return registroDiarioService.findAllRegistrosByIdDiario(request);
     }
 
-    @PutMapping(value = "/update/{id}")
-    @PreAuthorize("hasRole('ROLE_PATIENT')")
-    @ApiOperation(value = "", authorizations = { @Authorization(value="apiKey") })
-    @ApiResponses(value = {//
-            @ApiResponse(code = 400, message = "Something went wrong"), //
-            @ApiResponse(code = 403, message = "Access denied"), //
-            @ApiResponse(code = 404, message = "The user doesn't exist"), //
+    @GetMapping("/atualizarRegistroDiario")
+    @ApiOperation(value = "")
+    @ApiResponses(value = {
+            @ApiResponse(code = 400, message = "Something went wrong"),
+            @ApiResponse(code = 403, message = "Access denied"),
+            @ApiResponse(code = 404, message = "The user doesn't exist"),
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    public String update() {
-        return "algo";
+    public RegistroDiarioResponseDTO atualizarRegistroDiario(@RequestBody RegistroDiarioResponseDTO registroDiarioResponseDTO) {
+        return registroDiarioService.atualizarRegistroDiario(registroDiarioResponseDTO);
     }
+
 
     @DeleteMapping(value = "/delete/{id}")
-    @PreAuthorize("hasRole('ROLE_PATIENT')")
-    @ApiOperation(value = "", authorizations = { @Authorization(value="apiKey") })
-    @ApiResponses(value = {//
-            @ApiResponse(code = 400, message = "Something went wrong"), //
-            @ApiResponse(code = 403, message = "Access denied"), //
-            @ApiResponse(code = 404, message = "The user doesn't exist"), //
+    @ApiOperation(value = "")
+    @ApiResponses(value = {
+            @ApiResponse(code = 400, message = "Something went wrong"),
+            @ApiResponse(code = 403, message = "Access denied"),
+            @ApiResponse(code = 404, message = "The user doesn't exist"),
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    public String delete() {
-        return "algo";
-
+    public HttpStatus delete(@Param("id") Long id) {
+        return registroDiarioService.ApagarMensagem(id);
     }
-
- */
 }

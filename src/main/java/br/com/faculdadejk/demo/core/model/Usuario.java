@@ -5,13 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Data // Create getters and setters
+@Data
 @NoArgsConstructor
+@Table(name = "Usuario",schema = "TCC")
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,8 +1,6 @@
 package br.com.faculdadejk.demo.core.controller;
 
-import br.com.faculdadejk.demo.core.model.Diario;
 import br.com.faculdadejk.demo.core.model.Usuario;
-import br.com.faculdadejk.demo.core.model.dto.DiarioDTO;
 import br.com.faculdadejk.demo.core.model.dto.UsuarioDTO;
 import br.com.faculdadejk.demo.core.model.dto.UsuarioResponseDTO;
 import br.com.faculdadejk.demo.core.services.DiarioService;
@@ -11,7 +9,6 @@ import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +48,6 @@ public class UsuarioController {
     }
 
     @DeleteMapping(value = "/{username}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "${description.delete}", authorizations = { @Authorization(value="apiKey") })
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Something went wrong"), //
@@ -64,7 +60,6 @@ public class UsuarioController {
     }
 
     @GetMapping(value = "/{username}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "${description.search}", response = UsuarioResponseDTO.class, authorizations = { @Authorization(value="apiKey") })
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Something went wrong"), //
@@ -76,7 +71,6 @@ public class UsuarioController {
     }
 
     @GetMapping(value = "/me")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
     @ApiOperation(value = "${description.me}", response = UsuarioResponseDTO.class, authorizations = { @Authorization(value="apiKey") })
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Something went wrong"), //
@@ -87,7 +81,6 @@ public class UsuarioController {
     }
 
     @GetMapping("/refresh")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
     public String refresh(HttpServletRequest req) {
         return usuarioService.refresh(req.getRemoteUser());
     }

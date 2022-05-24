@@ -2,7 +2,6 @@ package br.com.faculdadejk.demo.core.services;
 
 import br.com.faculdadejk.demo.core.enums.TipoRegistroEnum;
 import br.com.faculdadejk.demo.core.exception.NotFoundException;
-import br.com.faculdadejk.demo.core.model.Diario;
 import br.com.faculdadejk.demo.core.model.RegistroDiario;
 import br.com.faculdadejk.demo.core.model.dto.RegistroDiarioResponseDTO;
 import br.com.faculdadejk.demo.core.model.request.RegistroDiarioRequest;
@@ -11,13 +10,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,16 +52,19 @@ public class RegistroDiarioService {
         return modelMapper.map(registroDiarioRepository.save(registroDiario),RegistroDiarioResponseDTO.class);
     }
 
-    public RegistroDiarioResponseDTO findAllRegistrosByIdDiario(HttpServletRequest request) {
-        List<RegistroDiario> registros = registroDiarioRepository.findAllByIdDiario(diarioService.findByIdUsuario(request)
-                                                                                                 .getIdDiario());
+    public List<RegistroDiarioResponseDTO> findAllRegistrosByIdDiario(HttpServletRequest request) {
+        List<RegistroDiario> registros = registroDiarioRepository.findAllByIdDiarioIdDiario(diarioService.findByIdUsuario(request).getIdDiario());
+        if (registros.isEmpty()) {
+            return new ArrayList<RegistroDiarioResponseDTO>();
+        } else {
+            return registros.stream().map(registroDiario -> modelMapper.map(registroDiario,
+                            RegistroDiarioResponseDTO.class))
+                    .collect(Collectors.toList());
+        }
 
-        return (RegistroDiarioResponseDTO) registros.stream().map(registroDiario -> modelMapper.map(registroDiario,
-                                                                                                    RegistroDiarioResponseDTO.class))
-                                                             .collect(Collectors.toList());
     }
 
-    public RegistroDiarioResponseDTO atualizarRegistroDiario(RegistroDiarioResponseDTO registroDiarioResponseDTO, HttpServletRequest request) {
+    public RegistroDiarioResponseDTO atualizarRegistroDiario(RegistroDiarioResponseDTO registroDiarioResponseDTO) {
         RegistroDiario registroDiarioInBase = registroDiarioRepository.findById(registroDiarioResponseDTO.getIdRegistro())
                                                                       .orElseThrow(() -> new NotFoundException("não foi encontrado"));
         registroDiarioInBase.setConteudoRegistro(registroDiarioResponseDTO.getConteudoRegistro());

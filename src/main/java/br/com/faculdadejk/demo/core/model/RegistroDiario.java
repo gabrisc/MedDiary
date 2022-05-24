@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @NoArgsConstructor
+@Table(name = "RegistroDiario",schema = "TCC")
 public class RegistroDiario {
 
     @Id
