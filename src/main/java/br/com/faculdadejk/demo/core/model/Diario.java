@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -17,10 +18,10 @@ public class Diario {
     private Long idDiario;
 
     @Column
-    private LocalDate dataCriacao;
+    private LocalDateTime dataCriacao;
 
     @Column
-    private LocalDate dataAlteracao;
+    private LocalDateTime dataAlteracao;
 
     @ManyToOne
     @JoinColumn(name="usuario_id", referencedColumnName = "id", nullable = false)

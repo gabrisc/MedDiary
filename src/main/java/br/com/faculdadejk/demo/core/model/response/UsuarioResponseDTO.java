@@ -1,4 +1,4 @@
-package br.com.faculdadejk.demo.core.model.dto;
+package br.com.faculdadejk.demo.core.model.response;
 
 import br.com.faculdadejk.demo.core.enums.UsuarioEnumRule;
 import io.swagger.annotations.ApiModelProperty;

@@ -1,11 +1,10 @@
 package br.com.faculdadejk.demo.core.model.dto;
 
-import br.com.faculdadejk.demo.core.model.Usuario;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Data
@@ -13,11 +12,12 @@ import java.time.LocalDate;
 public class DiarioDTO {
 
     @ApiModelProperty(position = 0)
-    private LocalDate dataCriacao;
+    private LocalDateTime dataCriacao;
 
     @ApiModelProperty(position = 1)
-    private LocalDate dataAlteracao;
+    private LocalDateTime dataAlteracao;
 
     @ApiModelProperty(position = 2)
-    private Usuario idUsuario;
+    private UsuarioDTO idUsuario;
+
 }

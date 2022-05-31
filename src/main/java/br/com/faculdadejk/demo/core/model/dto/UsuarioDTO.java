@@ -5,7 +5,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -13,21 +15,27 @@ import java.util.List;
 public class UsuarioDTO {
 
     @ApiModelProperty(position = 0)
-    private String nomeCompleto;
+    private String nome;
 
     @ApiModelProperty(position = 1)
-    private String email;
+    private String nomeDeUsuario;
 
     @ApiModelProperty(position = 2)
-    private String cpf_CRM;
+    private String email;
 
     @ApiModelProperty(position = 3)
-    private String username;
+    private String senha;
 
     @ApiModelProperty(position = 4)
-    private String password;
+    private String documento;
 
     @ApiModelProperty(position = 5)
-    List<UsuarioEnumRule> usuarioEnumRules;
+    private List<UsuarioEnumRule> usuarioEnumRules;
+
+    @ApiModelProperty(position = 6)
+    private LocalDateTime dataCriacao;
+
+
+
 
 }

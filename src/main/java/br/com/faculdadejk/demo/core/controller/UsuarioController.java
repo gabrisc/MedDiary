@@ -2,7 +2,7 @@ package br.com.faculdadejk.demo.core.controller;
 
 import br.com.faculdadejk.demo.core.model.Usuario;
 import br.com.faculdadejk.demo.core.model.dto.UsuarioDTO;
-import br.com.faculdadejk.demo.core.model.dto.UsuarioResponseDTO;
+import br.com.faculdadejk.demo.core.model.response.UsuarioResponseDTO;
 import br.com.faculdadejk.demo.core.services.DiarioService;
 import br.com.faculdadejk.demo.core.services.UsuarioService;
 import io.swagger.annotations.*;
